@@ -59,6 +59,35 @@
 
 <script>
 
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); // selecting custom attributes 
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); 
+  
+    if(!audio) return; // if user press a key with no audio tied to it, stop function
+
+    // when calling .play() to an element over and over again, it won't play again, 
+    // use currentTime = 0 to rewind the function on multiple keypresses
+    audio.currentTime = 0; 
+    audio.play();  
+
+    key.classList.add("playing");
+  } 
+
+  function removeTransition(e) {
+      if (e.propertyName !== 'transform') return; // skip if not transform
+      this.classList.remove("playing");
+    }
+  
+  const keys = document.querySelectorAll('.key'); 
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+  document.addEventListener("keydown", playSound); 
+
+  // 1. listen for key
+  // 2. call playSound function: audio play + add transition 
+  // 3. listen for transition
+  // 4. call removeTransition function: check property name + remove transition
+  
 </script>
 
 
